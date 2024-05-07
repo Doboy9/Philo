@@ -1,43 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/04 10:43:35 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/07 17:31:40 by dboire           ###   ########.fr       */
+/*   Created: 2024/05/07 17:54:57 by dboire            #+#    #+#             */
+/*   Updated: 2024/05/07 18:16:26 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "philo.h"
 
-int	ft_parse_av(char **av)
+void	eating(t_philo *philo)
 {
-	int	i;
-	int	j;
-
-	i = 1;
-	j = 0;
-	if (ft_atoi(av[1]) > 200)
-	{
-		ft_putstr_fd("200 philosphers maximum\n", 1);
-		return (1);
-	}
-	while(av[i])
-	{
-		j = 0;
-		while(av[i][j])
-		{
-			if (!ft_isdigit(av[i][j]))
-			{
-				ft_putstr_fd("Numeric arguments required\n", 1);
-				return (1);
-			}
-			else
-				j++;
-		}
-		i++;
-	}
-	return (0);
+	pthread_mutex_lock(&philo->l_fork);
+	put_message("has taken a fork", philo);
+	pthread_mutex_lock(philo->r_fork);
+	put_message("has taken a fork", philo);
+	pthread_mutex_lock(philo->last_meal_check);
+	philo->last_meal = get_current_time();
+	put_message("is eating", philo);
 }
