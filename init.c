@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:26:57 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 11:25:02 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 14:52:54 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_init_struct(t_prog *prog, t_philo *philos, char **av)
 		else
 			philos[i].meals = -1;
 		philos[i].start_time = get_current_time();
-		philos[i].last_meal = 0;
+		philos[i].last_meal = get_current_time() - philos[i].start_time;
 		philos[i].is_dead = &prog->is_dead;
 		philos[i].meals_eaten = 0;
 		philos[i].write = &prog->write;

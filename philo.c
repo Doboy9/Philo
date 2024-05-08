@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:33 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 11:29:42 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:07:31 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,14 @@ void	ft_philo(t_prog *prog)
 
 	i = 0;
 	philos_nb = prog->philos[0].philo_nb;
+	// while (i < philos_nb)
+	// {
+	// 	ft_routine((void *)&prog->philos[i]);
+	// 	ft_monitoring((void *)prog);
+	// 	i++;
+	// }
 	pthread_create(&monitor, NULL, ft_monitoring, (void *)prog);
-	while (i < philos_nb)
+	while (i < philos_nb && prog->is_dead != 1)
 	{
 		pthread_create(&prog->philos[i].thread, NULL, ft_routine, (void *)&prog->philos[i]);
 		i++;
@@ -51,9 +57,12 @@ void	ft_philo(t_prog *prog)
 	i = 0;
 	while (i < philos_nb)
 	{
+		pthread_mutex_unlock(&prog->last_meal_check);
 		pthread_join(prog->philos[i].thread, NULL);
 		i++;
 	}
+	pthread_mutex_unlock(&prog->dead);
+	pthread_mutex_unlock(&prog->last_meal_check);
 	return ;
 }
 
@@ -62,11 +71,14 @@ void	*ft_routine(void *Philos)
 	t_philo *philo;
 	
 	philo = (t_philo *)Philos;
-	while(1)
+	while(*philo->is_dead != 1)
 	{
-		eating(philo);
-		sleeping(philo);
-		thinking(philo);
+		if (*philo->is_dead != 1)
+			eating(philo);
+		if (*philo->is_dead != 1)
+			sleeping(philo);
+		if (*philo->is_dead != 1)
+			thinking(philo);
 	}
 	return NULL;
 }
