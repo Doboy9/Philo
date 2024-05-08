@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:33 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 16:55:54 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 17:31:09 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@ void	ft_philo(t_prog *prog)
 
 	i = 0;
 	philos_nb = prog->philos[0].philo_nb;
-	// while (i < philos_nb)
-	// {
-	// 	ft_routine((void *)&prog->philos[i]);
-	// 	ft_monitoring((void *)prog);
-	// 	i++;
-	// }
 	pthread_create(&monitor, NULL, ft_monitoring, (void *)prog);
 	while (i < philos_nb)
 	{
@@ -56,12 +50,6 @@ void	ft_philo(t_prog *prog)
 	i = 0;
 	while (i < philos_nb)
 	{
-		// if(prog->is_dead == 1)
-		// {
-		// 	pthread_mutex_unlock(&prog->dead);
-		// 	pthread_mutex_unlock(&prog->last_meal_check);
-		// 	pthread_mutex_unlock(&prog->philos[i].l_fork);
-		// }
 		pthread_join(prog->philos[i].thread, NULL);
 		i++;
 	}
@@ -74,17 +62,18 @@ void	*ft_routine(void *Philos)
 	t_philo *philo;
 	
 	philo = (t_philo *)Philos;
-	pthread_mutex_lock(philo->dead);
-	while(*philo->is_dead != 1)
+	while(1)
 	{
+		pthread_mutex_lock(philo->dead);
+		if(*philo->is_dead == 1)
+		{
+			pthread_mutex_unlock(philo->dead);
+			return NULL;
+		}
 		pthread_mutex_unlock(philo->dead);
-		if (*philo->is_dead != 1)
-			eating(philo);
-		if (*philo->is_dead != 1)
-			sleeping(philo);
-		if (*philo->is_dead != 1)
-			thinking(philo);
+		eating(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
-	pthread_mutex_unlock(philo->dead);
 	return NULL;
 }

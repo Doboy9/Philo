@@ -6,12 +6,12 @@
 #    By: dboire <dboire@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/03 16:48:52 by dboire            #+#    #+#              #
-#    Updated: 2024/05/08 10:49:02 by dboire           ###   ########.fr        #
+#    Updated: 2024/05/08 17:32:52 by dboire           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:= philo
-CFLAGS	:= -Wextra -Wall -Werror -g
+CFLAGS	:= -Wextra -Wall -Werror -g -pthread
 SRCS	:=	philo.c\
 			parse.c\
 			utils.c\
