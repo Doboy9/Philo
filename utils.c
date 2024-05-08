@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:14:55 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 16:05:28 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:18:01 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	is_he_dead(t_philo *philo)
 	if(time - philo->last_meal >= philo->time_to_die)
 	{
 		pthread_mutex_lock(philo->dead);
-		put_message("died", philo);
 		*philo->is_dead = 1;
+		put_message("died", philo);
 		return(1);
 	}
 	pthread_mutex_unlock(philo->last_meal_check);

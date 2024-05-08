@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:33 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 16:07:31 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:15:45 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,15 @@ void	ft_philo(t_prog *prog)
 	i = 0;
 	while (i < philos_nb)
 	{
-		pthread_mutex_unlock(&prog->last_meal_check);
+		if(prog->is_dead == 1)
+		{
+			pthread_mutex_unlock(&prog->dead);
+			pthread_mutex_unlock(&prog->last_meal_check);
+			pthread_mutex_unlock(&prog->philos[i].l_fork);
+		}
 		pthread_join(prog->philos[i].thread, NULL);
 		i++;
 	}
-	pthread_mutex_unlock(&prog->dead);
-	pthread_mutex_unlock(&prog->last_meal_check);
 	return ;
 }
 
