@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:14:55 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/07 18:16:19 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 11:29:06 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,31 @@ size_t	get_current_time(void)
 
 void	put_message(char *msg, t_philo *philo)
 {
-	size_t	time;
+	int	time;
 
 	pthread_mutex_lock(philo->write);
-	time = get_current_time();
-	printf("%zu %d %s", time, philo->id, msg);
+	time = get_current_time() - philo->start_time;
+	ft_putnbr_fd(time, 1);
+	ft_putstr_fd(" ", 1);
+	ft_putnbr_fd(philo->id, 1);
+	ft_putstr_fd(" ", 1);
+	ft_putstr_fd(msg, 1);
+	ft_putstr_fd("\n", 1);
 	pthread_mutex_unlock(philo->write);
 }
 
-int	is_he_dead(t_philo philo)
+int	is_he_dead(t_philo *philo)
 {
 	int	time;
 
-	pthread_mutex_lock(philo.last_meal_check);
-	time = get_current_time();
-	if(time - philo.last_meal >= philo.time_to_die && philo.eating == 0)
+	pthread_mutex_lock(philo->last_meal_check);
+	time = get_current_time() - philo->start_time;
+	if(time - philo->last_meal >= philo->time_to_die && philo->eating == 0)
 	{
-		pthread_mutex_unlock(philo.last_meal_check);
+		put_message("died", philo);
+		pthread_mutex_unlock(philo->last_meal_check);
 		return(1);
 	}
-	pthread_mutex_unlock(philo.last_meal_check);
+	pthread_mutex_unlock(philo->last_meal_check);
 	return(0);
 }
