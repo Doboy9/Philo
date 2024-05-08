@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:14:55 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 18:11:43 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 18:37:54 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	put_message(char *msg, t_philo *philo)
 
 	pthread_mutex_lock(philo->write);
 	time = get_current_time() - philo->start_time;
-	pthread_mutex_unlock(philo->write);
-	pthread_mutex_lock(philo->write);
 	printf("%d %d %s\n", time, philo->id, msg);
 	pthread_mutex_unlock(philo->write);
 }
