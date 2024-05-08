@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:14:55 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 16:18:01 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:54:14 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,14 @@ int	is_he_dead(t_philo *philo)
 	time = get_current_time() - philo->start_time;
 	if(time - philo->last_meal >= philo->time_to_die)
 	{
-		pthread_mutex_lock(philo->dead);
+		pthread_mutex_unlock(philo->last_meal_check);
 		*philo->is_dead = 1;
 		put_message("died", philo);
+		pthread_mutex_unlock(philo->dead);
 		return(1);
 	}
+	pthread_mutex_lock(philo->write);
+	pthread_mutex_unlock(philo->write);
 	pthread_mutex_unlock(philo->last_meal_check);
 	return(0);
 }

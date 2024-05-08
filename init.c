@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:26:57 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 14:52:54 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/08 16:33:44 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_init_struct(t_prog *prog, t_philo *philos, char **av)
 	int	i;
 
 	i = 0;
-	while(i < 3)
+	while(i < ft_atoi(av[1]))
 	{
 		philos[i].id = i;
 		philos[i].eating = 0;
@@ -48,9 +48,9 @@ void	ft_init_struct(t_prog *prog, t_philo *philos, char **av)
 		i++;
 	}
 	i = 0;
-	while (i < 3)
+	while (i < ft_atoi(av[1]))
 	{
-		prog->philos[i].r_fork = &prog->philos[(i + 2) % 3].l_fork;
+		prog->philos[i].r_fork = &prog->philos[(i + 1) % ft_atoi(av[1])].l_fork;
 		i++;
 	}
 }
