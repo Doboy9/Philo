@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 10:05:10 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 18:21:22 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/09 18:43:40 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	*ft_monitoring(void *observer)
 		pthread_mutex_lock(&prog->dead);
 		if(is_he_dead(prog->philos) == 1 || full_belly(prog->philos) == 1)
 		{
-			pthread_mutex_unlock(&prog->dead);
-			pthread_mutex_lock(&prog->dead);
 			prog->is_dead = 1;
 			pthread_mutex_unlock(&prog->dead);
 			return NULL;

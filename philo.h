@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:49 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 11:06:07 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/09 17:26:31 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ typedef struct s_philo
 	int				meals;
 	int				meals_eaten;
 	int				*is_dead;
-	pthread_mutex_t	*dead;
-	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	l_fork;
+	pthread_mutex_t	*dead;
+	pthread_mutex_t	*he_dead;
+	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*last_meal_check;
 }	t_philo;
@@ -47,6 +48,7 @@ typedef struct s_prog
 	int				is_dead;
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
+	pthread_mutex_t	he_dead;
 	pthread_mutex_t	last_meal_check;
 	t_philo			*philos;
 }	t_prog;

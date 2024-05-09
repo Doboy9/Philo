@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:33 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 18:48:43 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/09 18:46:53 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@ void	ft_philo(t_prog *prog)
 
 	i = 0;
 	philos_nb = prog->philos[0].philo_nb;
-	// while (i < philos_nb)
-	// {
-	// 	ft_routine((void *)&prog->philos[i]);
-	// 	ft_monitoring((void *)prog);
-	// 	i++;
-	// }
 	pthread_create(&monitor, NULL, ft_monitoring, (void *)prog);
 	while (i < philos_nb)
 	{
@@ -54,12 +48,12 @@ void	ft_philo(t_prog *prog)
 		i++;
 	}
 	i = 0;
+	pthread_join(monitor, NULL);
 	while (i < philos_nb)
 	{
 		pthread_join(prog->philos[i].thread, NULL);
 		i++;
 	}
-	pthread_join(monitor, NULL);
 	return ;
 }
 
@@ -70,16 +64,15 @@ void	*ft_routine(void *Philos)
 	philo = (t_philo *)Philos;
 	while(1)
 	{
-		pthread_mutex_lock(philo->dead);
-		if(*philo->is_dead == 1)
-		{
-			pthread_mutex_unlock(philo->dead);
-			return NULL;
-		}
-		pthread_mutex_unlock(philo->dead);
+		pthread_mutex_lock(philo->last_meal_check);
 		eating(philo);
+		pthread_mutex_unlock(philo->last_meal_check);
+		// pthread_mutex_lock(philo->last_meal_check);
 		sleeping(philo);
+		// pthread_mutex_unlock(philo->last_meal_check);
+		// pthread_mutex_lock(philo->last_meal_check);
 		thinking(philo);
+		// pthread_mutex_unlock(philo->last_meal_check);
 	}
 	return NULL;
 }

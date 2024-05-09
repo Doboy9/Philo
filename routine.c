@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 17:54:57 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/08 18:53:43 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/09 18:47:08 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(philo->dead);
 	if(*philo->is_dead == 1)
 	{
-		pthread_mutex_unlock(philo->dead);
+		pthread_mutex_unlock(&philo->l_fork);
+		pthread_mutex_unlock(philo->r_fork);
 		return ;
 	}
 	pthread_mutex_unlock(philo->dead);
@@ -25,13 +26,11 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(philo->r_fork);
 	put_message("has taken a fork", philo);
 	put_message("has taken a fork", philo);
-	pthread_mutex_lock(philo->last_meal_check);
-	philo->last_meal = get_current_time() - philo->start_time;
-	pthread_mutex_unlock(philo->last_meal_check);
 	put_message("is eating", philo);
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(&philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
+	philo->last_meal = get_current_time() - philo->start_time;
 }
 
 void	sleeping(t_philo *philo)
