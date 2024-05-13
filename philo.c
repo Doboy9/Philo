@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:33 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/13 11:13:08 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/13 19:05:51 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,7 @@ void	ft_philo(t_prog *prog)
 		pthread_join(prog->philos[i].thread, NULL);
 		i++;
 	}
-	pthread_mutex_destroy(&prog->write);
-	pthread_mutex_destroy(&prog->dead);
-	pthread_mutex_destroy(&prog->he_dead);
-	pthread_mutex_destroy(&prog->last_meal_check);
-	i = 0;
-	while (i < philos_nb)
-	{
-		pthread_mutex_destroy(&prog->philos[i].l_fork);
-		i++;
-	}
-	free(prog->philos);
+	ft_destroy_mutex(prog);
 	return ;
 }
 
@@ -82,4 +72,24 @@ void	*ft_routine(void *Philos)
 			thinking(philo);
 	}
 	return NULL;
+}
+
+void	ft_destroy_mutex(t_prog *prog)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_destroy(&prog->write);
+	pthread_mutex_destroy(&prog->dead);
+	pthread_mutex_destroy(&prog->ate);
+	pthread_mutex_destroy(&prog->ate_in_time);
+	pthread_mutex_destroy(&prog->he_dead);
+	pthread_mutex_destroy(&prog->last_meal_check);
+	i = 0;
+	while (i < prog->philos[0].philo_nb)
+	{
+		pthread_mutex_destroy(&prog->philos[i].l_fork);
+		i++;
+	}
+	free(prog->philos);
 }

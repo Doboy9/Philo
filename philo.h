@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:49 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/13 10:59:41 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/13 19:05:25 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ typedef struct s_philo
 	int				meals_eaten;
 	int				*is_dead;
 	pthread_mutex_t	l_fork;
+	pthread_mutex_t	*ate;
 	pthread_mutex_t	*dead;
 	pthread_mutex_t	*he_dead;
+	pthread_mutex_t	*ate_in_time;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*write;
 	pthread_mutex_t	*last_meal_check;
@@ -47,6 +49,8 @@ typedef struct s_prog
 {
 	int				is_dead;
 	pthread_mutex_t	write;
+	pthread_mutex_t	ate;
+	pthread_mutex_t	ate_in_time;
 	pthread_mutex_t	dead;
 	pthread_mutex_t	he_dead;
 	pthread_mutex_t	last_meal_check;
@@ -66,6 +70,7 @@ int		ate_in_time(t_philo philo);
 int		check_if_dead(t_philo *philo);
 int		is_he_dead(t_philo *philo);
 void	put_message(char *msg, t_philo *philo);
+void	ft_destroy_mutex(t_prog *prog);
 
 void	init_prog(t_prog *prog, t_philo *philos);
 void	ft_init_struct(t_prog *prog, t_philo *philos, char **av);
