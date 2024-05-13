@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:14:55 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/09 17:27:26 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/13 11:06:21 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,11 @@ void	put_message(char *msg, t_philo *philo)
 
 	pthread_mutex_lock(philo->write);
 	time = get_current_time() - philo->start_time;
+	if(check_if_dead(philo) == 1)
+	{
+		pthread_mutex_unlock(philo->write);
+		return ;
+	}
 	printf("%d %d %s\n", time, philo->id, msg);
 	pthread_mutex_unlock(philo->write);
-}
-
-int	is_he_dead(t_philo *philo)
-{
-	int	time;
-
-	pthread_mutex_lock(philo->last_meal_check);
-	time = get_current_time() - philo->start_time;
-	if(time - philo->last_meal >= philo->time_to_die)
-	{
-		pthread_mutex_unlock(philo->last_meal_check);
-		*philo->is_dead = 1;
-		put_message("died", philo);
-		return(1);
-	}
-	pthread_mutex_unlock(philo->last_meal_check);
-	return(0);
 }

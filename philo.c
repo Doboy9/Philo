@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:33 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/09 18:46:53 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/13 11:13:08 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	main(int ac, char **av) // Pas le droit a la libft
 
 void	ft_philo(t_prog *prog)
 {
-	int	i;
-	int	philos_nb;
+	int			i;
+	int			philos_nb;
 	pthread_t	monitor;
 
 	i = 0;
@@ -54,6 +54,17 @@ void	ft_philo(t_prog *prog)
 		pthread_join(prog->philos[i].thread, NULL);
 		i++;
 	}
+	pthread_mutex_destroy(&prog->write);
+	pthread_mutex_destroy(&prog->dead);
+	pthread_mutex_destroy(&prog->he_dead);
+	pthread_mutex_destroy(&prog->last_meal_check);
+	i = 0;
+	while (i < philos_nb)
+	{
+		pthread_mutex_destroy(&prog->philos[i].l_fork);
+		i++;
+	}
+	free(prog->philos);
 	return ;
 }
 
@@ -62,17 +73,13 @@ void	*ft_routine(void *Philos)
 	t_philo *philo;
 	
 	philo = (t_philo *)Philos;
-	while(1)
+	if(philo->id % 2 == 0)
+		ft_usleep(1);
+	while(check_if_dead(philo) != 1)
 	{
-		pthread_mutex_lock(philo->last_meal_check);
-		eating(philo);
-		pthread_mutex_unlock(philo->last_meal_check);
-		// pthread_mutex_lock(philo->last_meal_check);
-		sleeping(philo);
-		// pthread_mutex_unlock(philo->last_meal_check);
-		// pthread_mutex_lock(philo->last_meal_check);
-		thinking(philo);
-		// pthread_mutex_unlock(philo->last_meal_check);
+			eating(philo);
+			sleeping(philo);
+			thinking(philo);
 	}
 	return NULL;
 }

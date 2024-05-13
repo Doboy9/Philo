@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:19:49 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/09 17:26:31 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/13 10:59:41 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	sleeping(t_philo *philo);
 void	*ft_monitoring(void *observer);
 int		full_belly(t_philo *philo);
 
+int		ate_in_time(t_philo philo);
+int		check_if_dead(t_philo *philo);
 int		is_he_dead(t_philo *philo);
 void	put_message(char *msg, t_philo *philo);
 
