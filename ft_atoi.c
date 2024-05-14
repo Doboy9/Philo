@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wneel <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 11:09:24 by wneel             #+#    #+#             */
-/*   Updated: 2023/10/31 16:33:23 by wneel            ###   ########.fr       */
+/*   Created: 2024/05/14 14:53:08 by dboire            #+#    #+#             */
+/*   Updated: 2024/05/14 15:23:16 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
 static int	ft_static_is_char_whitespace(char c)
 {
 	return ((c > 7 && c < 14) || (c == 32));
 }
 
-int	ft_atoi(const char *nptr)
+long int	ft_atoi(const char *nptr)
 {
-	int		sign;
-	int		number;
-	int		i;
+	int			sign;
+	long int	number;
+	int			i;
 
 	i = 0;
 	number = 0;

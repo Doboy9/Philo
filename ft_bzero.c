@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wneel <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 17:03:21 by wneel             #+#    #+#             */
-/*   Updated: 2023/11/05 16:32:16 by wneel            ###   ########.fr       */
+/*   Created: 2024/05/14 14:53:16 by dboire            #+#    #+#             */
+/*   Updated: 2024/05/14 14:53:19 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+#include "philo.h"
+
+void	ft_bzero(void *s, size_t n)
 {
-	int	i;
+	size_t				i;
+	unsigned char		*us;
 
 	i = 0;
-	while (f && s && s[i] != '\0')
+	us = s;
+	while (i < n)
 	{
-		f(i, &s[i]);
+		us[i] = '\0';
 		i++;
 	}
 }

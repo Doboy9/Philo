@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wneel <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 09:05:24 by wneel             #+#    #+#             */
-/*   Updated: 2023/11/05 16:20:45 by wneel            ###   ########.fr       */
+/*   Created: 2024/05/14 14:55:41 by dboire            #+#    #+#             */
+/*   Updated: 2024/05/14 14:55:46 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+void	ft_putstr_fd(char *s, int fd)
 {
-	unsigned int	len;
-	unsigned int	i;
+	int	i;
 
-	len = ft_strlen(src);
 	i = 0;
-	if (size == 0)
-		return (len);
-	while (src[i] != '\0' && i < (size - 1))
+	if (!s || !fd)
+		return ;
+	while (s[i] != '\0')
 	{
-		dst[i] = src[i];
+		write(fd, &s[i], 1);
 		i++;
 	}
-	dst[i] = '\0';
-	return (len);
 }

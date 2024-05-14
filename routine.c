@@ -6,11 +6,11 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 17:54:57 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/13 18:27:18 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:08:09 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
 void	eating(t_philo *philo)
 {
@@ -21,11 +21,9 @@ void	eating(t_philo *philo)
 	put_message("is eating", philo);
 	pthread_mutex_lock(philo->last_meal_check);
 	philo->meals_eaten++;
-	pthread_mutex_unlock(philo->last_meal_check);
-	ft_usleep(philo->time_to_eat);
-	pthread_mutex_lock(philo->last_meal_check);
 	philo->last_meal = get_current_time() - philo->start_time;
 	pthread_mutex_unlock(philo->last_meal_check);
+	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(&philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 }

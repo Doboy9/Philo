@@ -6,11 +6,11 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:14:55 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/13 11:06:21 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:00:35 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
 int	ft_usleep(size_t milliseconds)
 {
@@ -37,11 +37,12 @@ void	put_message(char *msg, t_philo *philo)
 
 	pthread_mutex_lock(philo->write);
 	time = get_current_time() - philo->start_time;
-	if(check_if_dead(philo) == 1)
+	if (check_if_dead(philo) == 1)
 	{
 		pthread_mutex_unlock(philo->write);
 		return ;
 	}
-	printf("%d %d %s\n", time, philo->id, msg);
+	if (check_if_dead(philo) != 1)
+		printf("%d %d %s\n", time, philo->id, msg);
 	pthread_mutex_unlock(philo->write);
 }
