@@ -6,7 +6,7 @@
 /*   By: dboire <dboire@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 10:05:10 by dboire            #+#    #+#             */
-/*   Updated: 2024/05/13 19:08:56 by dboire           ###   ########.fr       */
+/*   Updated: 2024/05/14 13:41:18 by dboire           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_monitoring(void *observer)
 	prog = (t_prog*)observer;
 	while(1)
 	{
-		usleep(50000);
+		usleep(5000);
 		if(is_he_dead(prog->philos) == 1 || full_belly(prog->philos) == 1)
 			return NULL;
 	}
@@ -69,42 +69,54 @@ int	check_if_dead(t_philo *philo)
 int	is_he_dead(t_philo *philo)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	while(i < philo[0].philo_nb)
 	{
-		pthread_mutex_lock(philo->ate_in_time);
-		if(ate_in_time(philo[i]) == 1)
+		pthread_mutex_lock(philo->ate);
+		j = ate_in_time(&philo[i]);
+		pthread_mutex_unlock(philo->ate);
+		if(j == 1)
 		{
-			pthread_mutex_unlock(philo->ate_in_time);
 			put_message("died", philo);
 			pthread_mutex_lock(philo->ate);
 			*philo->is_dead = 1;
 			pthread_mutex_unlock(philo->ate);
 			return(1);
 		}
-		pthread_mutex_unlock(philo->ate_in_time);
 		i++;
 	}
 	return(0);
 }
 
-int	ate_in_time(t_philo philo)
+int	ate_in_time(t_philo *philo)
 {
 	int	time;
-	
-	pthread_mutex_lock(philo.last_meal_check);
-	time = 0;
-	pthread_mutex_unlock(philo.last_meal_check);
-	pthread_mutex_lock(philo.last_meal_check);
-	time = get_current_time() - philo.start_time;
-	pthread_mutex_unlock(philo.last_meal_check);
-	pthread_mutex_lock(philo.last_meal_check);
-	if(time - philo.last_meal >= philo.time_to_die || philo.philo_nb <= 1)
+	int	last_meal;
+	int	time_to_die;
+	int	philo_nb;
+
+	pthread_mutex_lock(philo->last_meal_check);
+	pthread_mutex_lock(philo->time);
+	time_to_die = philo->time_to_die;
+	pthread_mutex_unlock(philo->time);
+	pthread_mutex_lock(philo->time);
+	last_meal = philo->last_meal;
+	pthread_mutex_unlock(philo->time);
+	pthread_mutex_lock(philo->time);
+	philo_nb = philo->philo_nb;
+	pthread_mutex_unlock(philo->time);
+	pthread_mutex_lock(philo->time);
+	time = get_current_time() - philo->start_time;
+	if(time - last_meal >= time_to_die || philo_nb <= 1)
 	{
-		pthread_mutex_unlock(philo.last_meal_check);
+		pthread_mutex_unlock(philo->time);
+		pthread_mutex_unlock(philo->last_meal_check);
 		return (1);
 	}
-	pthread_mutex_unlock(philo.last_meal_check);
+	pthread_mutex_unlock(philo->time);
+	pthread_mutex_unlock(philo->last_meal_check);
 	return(0);
 }
